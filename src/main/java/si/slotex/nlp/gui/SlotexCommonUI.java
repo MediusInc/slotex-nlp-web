@@ -5,9 +5,7 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Viewport;
 
-@Viewport("width=device-width, initial-scale=1.0, user-scalable=yes")
 public class SlotexCommonUI extends VerticalLayout {
         protected HorizontalLayout header;
         protected HorizontalLayout body;
@@ -36,7 +34,7 @@ public class SlotexCommonUI extends VerticalLayout {
         body.setWidthFull();
         body.setId("body");
         VerticalLayout sidebar = initSidebar();
-        HorizontalLayout contentWindow = initContentWindow();
+        VerticalLayout contentWindow = initContentWindow();
         body.add(sidebar);
         body.add(contentWindow);
     }
@@ -69,24 +67,15 @@ public class SlotexCommonUI extends VerticalLayout {
         sidebar.add(menu);
         return sidebar;
     }
-    private HorizontalLayout initContentWindow(){
-        HorizontalLayout contentWindow = new HorizontalLayout();
-        VerticalLayout view = new VerticalLayout();
+    private VerticalLayout initContentWindow(){
+        VerticalLayout contentWindow = new VerticalLayout();
         contentWindow.setId("content");
-        view.add("Lorem ipsum dolor sit amet");
         //view.setFlexGrow(1);
-        contentWindow.add(view);
         return contentWindow;
     }
     private void initFooter(){
         footer = new HorizontalLayout();
         footer.setWidthFull();
         footer.setId("footer");
-    }
-
-    protected void setContent(VerticalLayout newView) { //swap views
-        HorizontalLayout content = (HorizontalLayout) body.getComponentAt(1);
-        VerticalLayout oldView = (VerticalLayout) content.getComponentAt(0);
-        content.replace(oldView, newView);
     }
 }
