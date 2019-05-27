@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class RemoteApiManager {
 
-    private Logger logger = Logger.getLogger(RemoteApiManager.class);
+    public Logger logger = Logger.getLogger(RemoteApiManager.class);
 
     @Value("${remote.scheme}")
     protected String scheme;
