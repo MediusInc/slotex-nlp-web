@@ -2,16 +2,14 @@ package si.slotex.nlp.gui.pages.admin;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import com.vaadin.flow.component.Html;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.Route;
 import org.apache.commons.lang3.StringUtils;
 import si.slotex.nlp.gui.ContentView;
 import si.slotex.nlp.gui.SlotexMainLayout;
-import si.slotex.nlp.gui.managers.RemoteApiManager;
+import si.slotex.nlp.gui.managers.Manager;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,13 +21,13 @@ public class AdminInfo extends ContentView {
     private JsonNode infoNode;
     private JsonNode healthNode;
     private JsonNode queueStatus;
-    private final RemoteApiManager infoManager;
+    private final Manager infoManager;
     private ObjectMapper objectMapper;
     private Html waitQueueSize;
     private Html workQueueSize;
     private Html waitQueueIDs;
     private Html workQueueIDs;
-    public AdminInfo(RemoteApiManager infoManager){
+    public AdminInfo(Manager infoManager){
         this.infoManager = infoManager;
     }
 
@@ -113,7 +111,7 @@ public class AdminInfo extends ContentView {
         ArrayList<String> IDsForQueue = new ArrayList<>();
         if (IDS.isArray()) {
             for (final JsonNode ID: IDS) {
-                IDsForQueue.add(ID.toString());
+                IDsForQueue.add(ID.toString().substring(1,ID.toString().length()-1));
             }
         }
         return StringUtils.join(IDsForQueue,",");

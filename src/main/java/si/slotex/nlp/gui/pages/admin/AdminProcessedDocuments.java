@@ -14,24 +14,26 @@ import com.vaadin.flow.data.renderer.NativeButtonRenderer;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.vaadin.flow.router.Route;
 import org.jboss.logging.Logger;
+import si.slotex.nlp.entity.DocTag;
+import si.slotex.nlp.entity.Sentence;
+import si.slotex.nlp.entity.Token;
 import si.slotex.nlp.gui.ContentView;
 import si.slotex.nlp.gui.SlotexMainLayout;
-import si.slotex.nlp.gui.managers.RemoteApiManager;
-import si.slotex.nlp.gui.models.DocTag;
-import si.slotex.nlp.gui.models.Sentence;
-import si.slotex.nlp.gui.models.Token;
+import si.slotex.nlp.gui.managers.Manager;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Route(value = "processedDocuments", layout = SlotexMainLayout.class)
 public class AdminProcessedDocuments extends ContentView {
+
+    private Logger logger = Logger.getLogger(AdminProcessedDocuments.class);
+
     private JsonNode DocumentsNode;
     private Dialog documentDetails;
     private Dialog sentenceDetails;
-    private final RemoteApiManager infoManager;
+    private final Manager infoManager;
     private ObjectMapper objectMapper;
 
     private TextField id;
@@ -41,7 +43,7 @@ public class AdminProcessedDocuments extends ContentView {
     private Grid<Sentence> sentenceGrid;
     private Grid<Token> tokenGrid;
 
-    public AdminProcessedDocuments(RemoteApiManager infoManager) {
+    public AdminProcessedDocuments(Manager infoManager) {
         this.infoManager = infoManager;
     }
 
@@ -101,16 +103,16 @@ public class AdminProcessedDocuments extends ContentView {
     }
 
     private void executeProcessing(String numberOfDocuments,Dialog setNumberOfDocuments){
-        infoManager.logger.log(Logger.Level.INFO,"requesting processing of documents...");
+        logger.log(Logger.Level.INFO,"requesting processing of documents...");
         setNumberOfDocuments.close();
         String processedDocs = infoManager.getData("/admin/process/"+numberOfDocuments);
         try {
             JsonNode processInfo = objectMapper.readTree(processedDocs);
-            infoManager.logger.log(Logger.Level.INFO,"processDetails:");
-            infoManager.logger.log(Logger.Level.INFO,"numOfProcessed: "+processInfo.get("numOfProcessed").asText());
-            infoManager.logger.log(Logger.Level.INFO,"processIds: "+processInfo.get("processIds").asText());
-            infoManager.logger.log(Logger.Level.INFO,"processStartTime: "+processInfo.get("processStartTime").asText());
-            infoManager.logger.log(Logger.Level.INFO,"processEndTime: "+processInfo.get("processEndTime").asText());
+            logger.log(Logger.Level.INFO,"processDetails:");
+            logger.log(Logger.Level.INFO,"numOfProcessed: "+processInfo.get("numOfProcessed").asText());
+            logger.log(Logger.Level.INFO,"processIds: "+processInfo.get("processIds").asText());
+            logger.log(Logger.Level.INFO,"processStartTime: "+processInfo.get("processStartTime").asText());
+            logger.log(Logger.Level.INFO,"processEndTime: "+processInfo.get("processEndTime").asText());
         }
         catch (IOException e){
             e.printStackTrace();
@@ -118,7 +120,7 @@ public class AdminProcessedDocuments extends ContentView {
     }
 
     private Dialog setupDetails(){
-        infoManager.logger.log(Logger.Level.INFO,"Setting up Details...");
+        logger.log(Logger.Level.INFO,"Setting up Details...");
         Dialog details = new Dialog();
         setupSentenceDetails();
         details.setWidth("90vw");
@@ -192,7 +194,7 @@ public class AdminProcessedDocuments extends ContentView {
     }
 
     private void openDetails(DocTag document){
-        infoManager.logger.log(Logger.Level.INFO,"displaying document details...");
+        logger.log(Logger.Level.INFO,"displaying document details...");
         id.setValue(document.getDocumentId());
         language.setValue(document.getLanguage());
         title.setValue(document.getTitle());
@@ -202,7 +204,7 @@ public class AdminProcessedDocuments extends ContentView {
     }
 
     private void tokenDetails(Sentence sentence){
-        infoManager.logger.log(Logger.Level.INFO,"displaying sentence tokens...");
+        logger.log(Logger.Level.INFO,"displaying sentence tokens...");
         tokenGrid.setItems(sentence.getTokens());
         sentenceDetails.open();
     }

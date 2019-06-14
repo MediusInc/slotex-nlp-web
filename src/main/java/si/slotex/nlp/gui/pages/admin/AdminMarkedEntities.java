@@ -14,10 +14,10 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import org.apache.commons.lang3.StringUtils;
+import si.slotex.nlp.entity.Entity;
 import si.slotex.nlp.gui.ContentView;
 import si.slotex.nlp.gui.SlotexMainLayout;
-import si.slotex.nlp.gui.managers.RemoteApiManager;
-import si.slotex.nlp.gui.models.Entity;
+import si.slotex.nlp.gui.managers.Manager;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class AdminMarkedEntities extends ContentView {
 
     private JsonNode entitiesNode;
     private Dialog entitiesDetails;
-    private final RemoteApiManager infoManager;
+    private final Manager infoManager;
     private ObjectMapper objectMapper;
 
     private TextField entityId;
@@ -37,7 +37,7 @@ public class AdminMarkedEntities extends ContentView {
     private TextField entityType;
     private Details documentIds;
 
-    public AdminMarkedEntities(RemoteApiManager infoManager) {
+    public AdminMarkedEntities(Manager infoManager) {
         this.infoManager = infoManager;
     }
 
