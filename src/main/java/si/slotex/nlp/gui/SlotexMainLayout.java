@@ -6,6 +6,7 @@ import com.github.appreciated.app.layout.component.menu.left.items.LeftNavigatio
 import com.github.appreciated.app.layout.component.menu.left.builder.LeftAppMenuBuilder;
 import com.github.appreciated.app.layout.component.menu.left.builder.LeftSubMenuBuilder;
 import com.github.appreciated.app.layout.router.AppLayoutRouterLayout;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.page.Viewport;
@@ -21,9 +22,11 @@ import si.slotex.nlp.gui.pages.learn.LearnModels;
 public class SlotexMainLayout extends AppLayoutRouterLayout {
 
     public SlotexMainLayout() {
+        Image logo = new Image("https://slotex.si/images/slotex_logo_web.svg", "SloTex NLP WEB Logo");
+        logo.setHeight("var(--app-layout-bar-height)");
         init(AppLayoutBuilder
                 .get(Behaviour.LEFT_RESPONSIVE)
-                .withTitle("SloTex")
+                .withIconComponent(logo)
                 .withAppMenu(LeftAppMenuBuilder
                         .get()
                         .add(LeftSubMenuBuilder.get("Administration",VaadinIcon.OPTIONS.create())

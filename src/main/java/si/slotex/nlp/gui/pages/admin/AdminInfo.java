@@ -6,6 +6,8 @@ import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
+
 import org.apache.commons.lang3.StringUtils;
 import si.slotex.nlp.gui.ContentView;
 import si.slotex.nlp.gui.SlotexMainLayout;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 
 
 @Route(value = "info", layout = SlotexMainLayout.class)
+@RouteAlias(value = "", layout = SlotexMainLayout.class)
 public class AdminInfo extends ContentView {
 
     private JsonNode infoNode;
