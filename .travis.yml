@@ -15,7 +15,7 @@ notifications:
 env:
   global:
     - DOCKER_COMPOSE_VERSION=1.24.1
-    - IMAGE_NAME=pkpslotex/slotex-nlp-core
+    - IMAGE_NAME=pkpslotex/slotex-nlp-web
 
 addons:
   sonarcloud:
