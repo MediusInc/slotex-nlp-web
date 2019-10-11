@@ -5,48 +5,42 @@ jdk: oraclejdk8
 install: mvn dependency:resolve
 cache:
   directories:
-    - $HOME/bin
-    - $HOME/.m2
-
+  - "$HOME/bin"
+  - "$HOME/.m2"
 notifications:
-  slack: pkp2019-slotex:$SLACK_TOKEN
+  slack:
+    secure: oh0edh1Gh12FadPwqelbRU9z76kJZY4K7zCohxKEW2KjSP48ZnD7cAXHBzwX8d86GMkLc6RpEmd8jAfkn5IxQukQCBdqOjjsg/FimmJR8HnnCy2SaJ1wY0B6b1DJexesJz4YPb6+cxn8TNNJ1fBVVnP/x4Tv4GIPbaVOwbOG9rUJwq12u3D8CI/oN88LR4YX+26sB5POBxccA3BuLUYoGd9GbOaBOBy/TYAw/ECjI3t2JLDVNoQtCtd+oiwnGsDF57vDA7sPPJWFvbXEb++5qrt02atPgVgTz17CNpv/qZ8mT/LveDtBGYkiwXRElCoLRX0gqW4MSyiNsbVyrShGW1u0sCJktMuoqxf2UcJNhrJxCcUt3FBitXg7tSB1Rnlm6xf8mhpGNeq/LBYVuolcZe7xSO/lmns1CSQ1KszmcZ4jDMtsH2lsrbo8odW/FkSWuFdsKp8t0EDIYHrgawtdh7uNwHTs0mJn1OjIo7OrgjDvDuc/gIAQ1iHipxNGidnCbfcN6e080U0tFBEFwKc8uZ433yn6AK+8iEi6Zmn61mI4oODmpTn6Q/l/yy/4U7DNZTyydkzGOdOTPXrlrPO8Hoko2Oa0ZXv9ew7vcIrOM69FAmaQpmMpnCXhS23H1Bsj80cM8lwFdgRo7NP/6BfwTi5E07oAcdPvbJ9GXc2vov0=
   email: false
-
 env:
   global:
-    - DOCKER_COMPOSE_VERSION=1.24.1
-    - IMAGE_NAME=pkpslotex/slotex-nlp-web
-
+  - DOCKER_COMPOSE_VERSION=1.24.1
+  - IMAGE_NAME=pkpslotex/slotex-nlp-web
 addons:
   sonarcloud:
-    organization: "mediusinc"
-
+    organization: mediusinc
 services:
-  - docker
-
+- docker
 before_install:
-  - sudo rm /usr/local/bin/docker-compose
-  - if [ ! -f "$HOME/bin/docker-compose" ]; then curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > $HOME/bin/docker-compose; fi
-  - chmod +x $HOME/bin/docker-compose
-  - sudo cp $HOME/bin/docker-compose /usr/local/bin/
-  - docker-compose version
-
+- sudo rm /usr/local/bin/docker-compose
+- if [ ! -f "$HOME/bin/docker-compose" ]; then curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
+  -s`-`uname -m` > $HOME/bin/docker-compose; fi
+- chmod +x $HOME/bin/docker-compose
+- sudo cp $HOME/bin/docker-compose /usr/local/bin/
+- docker-compose version
 before_script:
-  - ./run-in-docker.sh --ittest
-
+- "./run-in-docker.sh --ittest"
 script:
-  - mvn clean verify -P sonar -Dsonar.login=$SONAR_TOKEN
-  - mvn package
-  - ./run-in-docker.sh --ittest --down
-
+- mvn clean verify -P sonar -Dsonar.login=$SONAR_TOKEN
+- mvn package
+- "./run-in-docker.sh --ittest --down"
 after_script:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_COMMIT; fi`
-  - docker build -t $IMAGE_NAME:$TRAVIS_COMMIT .
-  - docker tag $IMAGE_NAME:$TRAVIS_COMMIT $IMAGE_NAME:$TAG
-  - docker push $IMAGE_NAME:$TAG
-  - ./.travis/update-readme.sh
-
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_COMMIT;
+  fi`
+- docker build -t $IMAGE_NAME:$TRAVIS_COMMIT .
+- docker tag $IMAGE_NAME:$TRAVIS_COMMIT $IMAGE_NAME:$TAG
+- docker push $IMAGE_NAME:$TAG
+- "./.travis/update-readme.sh"
 deploy:
   provider: script
   script: evn IMAGE_NAME=pkpslotex/slotex-nlp-core ./.travis/release-docker-image.sh
