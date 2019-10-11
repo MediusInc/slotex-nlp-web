@@ -1,7 +1,7 @@
 #!/bin/bash 
 ###################################################################
 #Script Name   : run-in-docker.sh
-#Description   : Run SloTex core project with this small script
+#Description   : Run SloTex web project with this small script
 #Args          :
 #Author        : Tadej Justin
 #Email         : tadej.justin@medius.si
@@ -40,8 +40,10 @@ set_dependencies () {
                 REDIS_VERSION=$(echo "$image" | rev | cut -d ":" -f 1 | rev)
             elif echo "$image" | grep -q "mongo"; then
                 MONGO_VERSION=$(echo "$image" | rev | cut -d ":" -f 1 | rev)
-            elif echo "$image" | grep -q "medius-nlp"; then
-                SLOTEX_NLP_VERSION=$(echo "$image" | rev | cut -d ":" -f 1 | rev)
+            elif echo "$image" | grep -q "slotex-nlp-core"; then
+                SLOTEX_NLP_CORE_VERSION=$(echo "$image" | rev | cut -d ":" -f 1 | rev)
+            elif echo "$image" | grep -q "slotex-nlp-web"; then
+                SLOTEX_NLP_WEB_VERSION=$(echo "$image" | rev | cut -d ":" -f 1 | rev)
             fi
         done
     else
@@ -51,7 +53,8 @@ set_dependencies () {
 
     echo "export REDIS_TAG=${REDIS_VERSION}" > dependencies
     { echo "export MONGO_TAG=${MONGO_VERSION}" 
-      echo "export SLOTEX_NLP_TAG=${SLOTEX_NLP_VERSION}" 
+      echo "export SLOTEX_NLP_CORE_TAG=${SLOTEX_NLP_CORE_VERSION}"
+      echo "export SLOTEX_NLP_WEB_TAG=${SLOTEX_NLP_WEB_VERSION}" 
     } >> dependencies
 }
 
@@ -64,7 +67,8 @@ source dependencies
 
 check_if_var_is_set REDIS_TAG
 check_if_var_is_set MONGO_TAG
-check_if_var_is_set SLOTEX_NLP_TAG
+check_if_var_is_set SLOTEX_NLP_CORE_TAG
+check_if_var_is_set SLOTEX_NLP_WEB_TAG
 
 # parse args and switches
 options=$(getopt -o hrpdce: --long help,remove,pull,down,check,env: -n 'parse-options' -- "$@")
@@ -104,7 +108,7 @@ if $pull; then
     if [ "$env" != "it-test" ]; then
         docker-compose pull -q
     else
-        docker-compose pull -q redis mongodb
+        docker-compose pull -q redis mongodb slotex-nlp-core
     fi
     run=false
 fi
@@ -113,7 +117,7 @@ if $down; then
     if [ "$env" != "it-test" ]; then
         docker-compose down -v
     else
-        docker-compose down -v redis mongodb
+        docker-compose down -v redis mongodb slotex-nlp-core
     fi
     run=false
 fi
@@ -122,7 +126,7 @@ if $rmi; then
     if [ "$env" != "it-test" ]; then
         docker-compose down -v --rmi all
     else
-        docker-compose down -v --rmi redis mongodb
+        docker-compose down -v --rmi redis mongodb slotex-nlp-core
     fi
     run=false
 fi
@@ -136,7 +140,7 @@ if $run; then
     if [ "$env" != "it-test" ]; then
         docker-compose up -d
     else
-        docker-compose up -d redis mongodb
+        docker-compose up -d redis mongodb slotex-nlp-core
     fi
 fi
 
