@@ -3,7 +3,7 @@
 SloTex Web project is a front-end Vaadin project for administration of
 SloTex-NLP-core project.
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=MediusInc_slotex-nlp-web&metric=alert_status)](https://sonarcloud.io/dashboard?id=MediusInc_slotex-nlp-core)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=si.slotex.nlp%3Aslotex-nlp-web&metric=alert_status)](https://sonarcloud.io/dashboard?id=si.slotex.nlp%3Aslotex-nlp-web)
 [![Build Status](https://travis-ci.org/MediusInc/slotex-nlp-web.svg?branch=master)](https://travis-ci.org/MediusInc/slotex-nlp-web)
 [![License](https://img.shields.io/github/license/MediusINC/slotex-nlp-web)]( https://github.com/MediusInc/slotex-nlp-web/blob/master/LICENSE.md)
 [![Slack](https://img.shields.io/badge/slack-@pkp2019-yellow.svg?logo=slack)](https://join.slack.com/t/pkp2019-slotex/shared_invite/enQtNzkwNTk5MDMyOTc2LTNhOTQ0MTU3ZDMzMDM2NDRhYTRlNWRkOWRmZTk0N2YzNmExNDliYTU1NGI4NWFjNjFhNTFkNTcyNzhlZGIzZmU)
