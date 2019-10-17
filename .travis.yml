@@ -1,8 +1,6 @@
-sudo: required
 language: java
-dist: trusty
-jdk: oraclejdk8
-install: mvn dependency:resolve
+jdk: oraclejdk11
+install: mvn -q dependency:resolve
 cache:
   directories:
   - "$HOME/bin"
@@ -19,30 +17,26 @@ addons:
   sonarcloud:
     organization: mediusinc
 services:
-- docker
+  - docker
+
 before_install:
-- sudo rm /usr/local/bin/docker-compose
-- if [ ! -f "$HOME/bin/docker-compose" ]; then curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
-  -s`-`uname -m` > $HOME/bin/docker-compose; fi
-- chmod +x $HOME/bin/docker-compose
-- sudo cp $HOME/bin/docker-compose /usr/local/bin/
-- docker-compose version
+  - if [ ! -f "$HOME/bin/docker-compose" ]; then curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > $HOME/bin/docker-compose; fi
+  - chmod +x $HOME/bin/docker-compose
+  - export PATH=$HOME/bin:$PATH
+  - docker-compose version
 before_script:
-- "./run-in-docker.sh --ittest"
+  - export PATH=$HOME/bin:$PATH
+  - "./run-in-docker.sh --ittest"
 script:
-- mvn clean verify -P sonar -Dsonar.login=$SONAR_TOKEN
-- mvn package
-- "./run-in-docker.sh --ittest --down"
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - mvn clean verify -P sonar -Dsonar.login=$SONAR_TOKEN
+  - "./run-in-docker.sh --ittest --down"
+
 after_script:
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_COMMIT;
-  fi`
-- docker build -t $IMAGE_NAME:$TRAVIS_COMMIT .
-- docker tag $IMAGE_NAME:$TRAVIS_COMMIT $IMAGE_NAME:$TAG
-- docker push $IMAGE_NAME:$TAG
-- "./.travis/update-readme.sh"
-deploy:
-  provider: script
-  script: evn IMAGE_NAME=pkpslotex/slotex-nlp-core ./.travis/release-docker-image.sh
-  on:
-    tags: true
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_COMMIT; fi`
+  - mvn compile jib:dockerBuild
+  - if [ "$TRAVIS_TAG" != "" ]; then TAG=$TRAVIS_TAG; fi
+  - if [ "$TAG" != "$TRAVIS_COMMIT" ]; then docker tag $IMAGE_NAME:$TRAVIS_COMMIT $IMAGE_NAME:$TAG; ./.travis/update-readme.sh; fi
+  - docker push $IMAGE_NAME:$TAG
+
