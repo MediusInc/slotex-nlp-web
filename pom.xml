@@ -10,7 +10,7 @@
   </parent>
   <groupId>si.slotex.nlp</groupId>
   <artifactId>slotex-nlp-web</artifactId>
-  <version>1.1.1</version>
+  <version>1.1.2-SNAPSHOT</version>
   <name>slotex-nlp-web</name>
   <description>Slotex-nlp-web</description>
   <licenses>
