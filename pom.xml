@@ -21,7 +21,7 @@
   </licenses>
   <properties>
     <java.version>1.8</java.version>
-    <vaadin.version>14.4.10</vaadin.version>
+    <vaadin.version>14.5.3</vaadin.version>
     <version.slotex-nlp.entity>1.0.0</version.slotex-nlp.entity>
     <appreciated.version>2.1.0.beta1</appreciated.version>
     <jboss.version>4.0.0.Final</jboss.version>
