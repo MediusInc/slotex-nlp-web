@@ -24,7 +24,7 @@
     <vaadin.version>14.6.8</vaadin.version>
     <version.slotex-nlp.entity>1.0.0</version.slotex-nlp.entity>
     <appreciated.version>2.1.0.beta1</appreciated.version>
-    <jboss.version>4.0.0.Final</jboss.version>
+    <jboss.version>4.7.8.Final</jboss.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.build.timestamp.format>yyyy-MM-dd HH</maven.build.timestamp.format>
